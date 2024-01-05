@@ -10,7 +10,7 @@ const App = () => {
     <NavigationContainer>
       <Stack.Navigator>
         <Stack.Screen
-          name="NewThreads"
+          name="NewThread"
           component={NewThread}
           options={{title: 'New Thread'}}
         />
@@ -18,6 +18,6 @@ const App = () => {
       </Stack.Navigator>
     </NavigationContainer>
   );
-};
+}; 
 
 export default App;
