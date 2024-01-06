@@ -1,8 +1,8 @@
 import React, { useState } from 'react'
-import axios from 'react-native-axios';
+// import axios from 'react-native-axios';
 import { Button, SafeAreaView, ScrollView, Text, TextInput, TouchableOpacity, View } from 'react-native';
 import tw from 'twrnc';
-const NewThread = () => {
+const NewThread = ({ navigation }) => {
     const [post, setPost] = useState('');
     // const [loading, setLoading] = useState(null)
 
@@ -29,7 +29,8 @@ const NewThread = () => {
             console.log(responseData);
     
             // Handle successful post (e.g., clear text input, display success message)
-            alert('New Post added successfully!');
+            // alert('New Post added successfully!');
+            navigation.navigate('ViewThreads');
             setPost(''); // Clear the input field
         } catch (error) {
             console.error('Error posting thread:', error);
