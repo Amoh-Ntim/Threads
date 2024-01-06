@@ -2,6 +2,7 @@ import React from 'react';
 import {NavigationContainer} from '@react-navigation/native';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import NewThread from './components/NewThread';
+import ViewThreads from './components/ViewThreads';
 
 const Stack = createNativeStackNavigator();
 
@@ -14,7 +15,7 @@ const App = () => {
           component={NewThread}
           options={{title: 'New Thread'}}
         />
-        {/* <Stack.Screen name="Profile" component={ProfileScreen} /> */}
+        <Stack.Screen name="ViewThreads" component={ViewThreads} />
       </Stack.Navigator>
     </NavigationContainer>
   );
