@@ -1,12 +1,12 @@
 const express = require('express');
 const mongoose = require('mongoose');
-const cors = require('cors');
 const bodyParser = require('body-parser');
+const cors = require('cors');
 const app = express();
 const route = require('../server/routes/threadroute');
 // Middleware
-app.use(cors());
 app.use(bodyParser.json());
+app.use(cors());
 app.use(route);
 const port = 6000;
 const uri = 'mongodb+srv://amohntim:threadss@threadscluster.za8dfkw.mongodb.net/?retryWrites=true&w=majority'

@@ -4,7 +4,8 @@ const router = express.Router();
 // Create
 router.post('/thread', async (req, res) => {
   try {
-    const item = new Threadmodel(req.body);
+    const { post } = req.body;
+    const item = new Threadmodel({post});
     const savedItem = await item.save();
     res.status(201).json(savedItem);
   } catch (err) {

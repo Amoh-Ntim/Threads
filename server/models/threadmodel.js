@@ -3,7 +3,7 @@ const mongoose = require('mongoose');
 const itemSchema = new mongoose.Schema({
 post: {
     type: String,
-    // required: true,
+    required: true,
 },
 
   // Add more fields as needed
