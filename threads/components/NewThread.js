@@ -41,7 +41,7 @@ const NewThread = ({ navigation }) => {
             } else if (error.request) {
                 alert('Network error: Check your connection and try again.');
             } else {
-                alert('Something went wrong. Please try again later.');
+                alert('No internet connection!!! Turn on your mobile data or WIFI');
             }
         }
     };
