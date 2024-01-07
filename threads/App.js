@@ -30,7 +30,7 @@ function App() {
         options={{
           tabBarIcon: ({ size, focused, color }) => (
             <Image 
-              style={{ width: size, height: size, }} 
+              style={{ width: size, height: size}} 
               source={require('../threads/assets/Activity.png')} 
             />
           ),
