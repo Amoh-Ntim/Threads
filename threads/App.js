@@ -16,7 +16,7 @@ function App() {
         name="NewThread" 
         component={NewThread} 
         options={{
-          tabBarIcon: ({ size, focused, color }) => (
+          tabBarIcon: ({ size }) => (
             <Image 
               style={{ width: size, height: size }} 
               source={require('../threads/assets/Write.png')} 
