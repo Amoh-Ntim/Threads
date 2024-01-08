@@ -5,6 +5,7 @@ import NewThread from './components/NewThread';
 import ViewThreads from './components/ViewThreads';
 import { Image } from 'react-native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
+import DeleteThread from './components/DeleteThread';
 
 const Tab = createBottomTabNavigator();
 
@@ -35,6 +36,10 @@ function App() {
             />
           ),
         }}
+      />
+      <Tab.Screen 
+        name="DeleteThread" 
+        component={DeleteThread} 
       />
     </Tab.Navigator>
     </NavigationContainer>
