@@ -35,8 +35,9 @@ router.put('/thread/:id', async (req, res) => {
 
 // Delete
 router.delete('/thread/:id', async (req, res) => {
+  const { id } = req.params;
   try {
-    await Threadmodel.findByIdAndDelete(req.params.id);
+    await Threadmodel.findByIdAndDelete(id);
     res.json({ message: 'Item deleted' });
   } catch (err) {
     res.status(404).json({ error: err.message });
