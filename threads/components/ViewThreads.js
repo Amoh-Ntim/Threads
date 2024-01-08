@@ -6,6 +6,11 @@ import { useNavigation } from '@react-navigation/native';
 
 const ViewThreads = () => {
   const [posts, setPosts] = useState([]);
+  const [isPressed, setIsPressed] = useState(false);
+  const [pressedPosts, setPressedPosts] = useState({});
+
+  const imgDefault = require('../assets/Vectorlike.png');
+  const imgOther = require('../assets/likedtrue.png');
 
   useEffect(() => {
     fetch('http://192.168.184.69:6000/thread')
@@ -44,7 +49,12 @@ const ViewThreads = () => {
     }
   };
   
-  
+  const handlePress = (id) => {
+    setPressedPosts(prevState => ({
+      ...prevState,
+      [id]: !prevState[id]
+    }));
+  };
   return (
     <SafeAreaView>
     <View style={tw`flex justify-center items-center`}>
@@ -53,17 +63,17 @@ const ViewThreads = () => {
         />
     </View> 
       <ScrollView>
-        {posts.map((post) => (
+        {posts.slice(0).reverse().map((post) => (
           <View key={post._id} style={tw`p-4 border-b border-gray-200`}>
           <View>
-            <Text style={tw`text-lg`}>{post.post}</Text>
+            <Text style={tw`text-lg mb-8`}>{post.post}</Text>
           </View>
           {/* view for the buttons */}
           <View style={tw`flex flex-row gap-x-4`}>
           <View>
-          <Image
-            source={require('../assets/Vectorlike.png')}
-          />
+          <TouchableOpacity onPress={() => handlePress(post._id)}>
+                <Image source={pressedPosts[post._id] ? imgOther : imgDefault} />
+          </TouchableOpacity>
            </View> 
            <View style={tw``}>
           <Image
@@ -78,7 +88,7 @@ const ViewThreads = () => {
            <TouchableOpacity onPress={() => handleDelete(post._id)}>
            <View style={tw``}>
           <Image
-            source={require('../assets/Framesend.png')}
+            source={require('../assets/FiTrash2.png')}
           />
            </View>
            </TouchableOpacity>
