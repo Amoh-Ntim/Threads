@@ -12,8 +12,7 @@ const ViewThreads = () => {
       .then((response) => response.json())
       .then((data) => setPosts(data))
       .catch((error) => console.error('Error fetching posts:', error));
-      // handleDelete();
-  }, [setPosts]);
+  }, [posts]);
   const navigation = useNavigation();
 
   const handleDelete = async (id) => {
