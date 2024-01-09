@@ -4,6 +4,9 @@ const itemSchema = new mongoose.Schema({
 post: {
     type: String,
     required: true,
+},image: {
+  data: Buffer,
+  contentType: String
 },
 
   // Add more fields as needed

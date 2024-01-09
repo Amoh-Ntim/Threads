@@ -1,11 +1,12 @@
-const Threadmodel = require('../models/threadmodel')
+const Threadmodel = require('../models/threadmodel');
 const express = require('express');
 const router = express.Router();
+
 // Create
 router.post('/thread', async (req, res) => {
   try {
-    const { post } = req.body;
-    const item = new Threadmodel({post});
+    const { post, image } = req.body;
+    const item = new Threadmodel({ post, image });
     const savedItem = await item.save();
     res.status(201).json(savedItem);
   } catch (err) {
