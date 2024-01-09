@@ -8,20 +8,29 @@ import * as ImagePicker from 'expo-image-picker';
 const NewThread = ({ navigation }) => {
     const [post, setPost] = useState('');
     // const [loading, setLoading] = useState(null)
+    const [image, setImage] = useState(null);
 
     const handlePost = async () => {
         try {
-            const data = {
-                post,
-                // ...other fields
-            };
+            let formData = new FormData();
+    formData.append('post', post);
+
+    // Check if there's an image to upload
+    if (image) {
+      // Fetch the image data
+      let response = await fetch(image);
+      let blob = await response.blob();
+
+      // Add the image data to the form
+      formData.append('image', { uri: image, name: 'image.jpg', type: 'image/jpeg' });
+    }
     
             const response = await fetch('http://192.168.184.69:6000/thread', {
                 method: 'POST',
                 headers: {
-                    'Content-Type': 'application/json',
+                    'Content-Type': 'multipart/form-data',
                 },
-                body: JSON.stringify(data),
+                body: formData,
             });
     
             if (!response.ok) {
@@ -49,7 +58,6 @@ const NewThread = ({ navigation }) => {
         }
     };
     
-    const [image, setImage] = useState(null);
 
   const pickImage = async () => {
     let result = await ImagePicker.launchImageLibraryAsync({

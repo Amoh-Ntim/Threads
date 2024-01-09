@@ -1,11 +1,15 @@
 const Threadmodel = require('../models/threadmodel');
 const express = require('express');
 const router = express.Router();
+const multer = require('multer');
+const upload = multer();
 
 // Create
-router.post('/thread', async (req, res) => {
+router.post('/thread', upload.single('image'), async (req, res) => {
   try {
-    const { post, image } = req.body;
+    const { post } = req.body;
+    const image = req.file ? req.file.buffer : undefined;
+
     const item = new Threadmodel({ post, image });
     const savedItem = await item.save();
     res.status(201).json(savedItem);
