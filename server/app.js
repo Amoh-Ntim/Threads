@@ -4,7 +4,9 @@ const bodyParser = require('body-parser');
 const cors = require('cors');
 const app = express();
 const route = require('../server/routes/threadroute');
+const path = require('path');
 // Middleware
+app.use('/Images', express.static(path.join(__dirname, 'Images')));
 app.use(bodyParser.json());
 app.use(cors());
 app.use(route);

@@ -11,21 +11,23 @@ const NewThread = ({ navigation }) => {
     const [image, setImage] = useState(null);
 
     const handlePost = async () => {
-        try {
-            let formData = new FormData();
+         try {
+    let formData = new FormData();
     formData.append('post', post);
 
     // Check if there's an image to upload
     if (image) {
-      // Fetch the image data
-      let response = await fetch(image);
-      let blob = await response.blob();
+      let uriParts = image.split('.');
+      let fileType = uriParts[uriParts.length - 1];
 
-      // Add the image data to the form
-      formData.append('image', { uri: image, name: 'image.jpg', type: 'image/jpeg' });
+      formData.append('image', {
+        uri: image,
+        name: `photo.${fileType}`,
+        type: `image/${fileType}`,
+      });
     }
     
-            const response = await fetch('http://192.168.184.69:6000/thread', {
+            const response = await fetch('http://192.168.14.69:6000/thread', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'multipart/form-data',

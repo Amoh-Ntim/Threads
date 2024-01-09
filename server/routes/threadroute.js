@@ -2,15 +2,28 @@ const Threadmodel = require('../models/threadmodel');
 const express = require('express');
 const router = express.Router();
 const multer = require('multer');
-const upload = multer();
+
+const path = require('path');
+
+// Set up multer for handling image uploads
+const storage = multer.diskStorage({
+  destination: (req, file, cb) => {
+    cb(null, 'Images');
+  },
+  filename: (req, file, cb) => {
+    cb(null, file.fieldname + '-' + Date.now() + path.extname(file.originalname));
+  },
+});
+
+const upload = multer({ storage: storage });
 
 // Create
 router.post('/thread', upload.single('image'), async (req, res) => {
   try {
     const { post } = req.body;
-    const image = req.file ? req.file.buffer : undefined;
+    const imagePath = req.file ? req.file.path : null;
 
-    const item = new Threadmodel({ post, image });
+    const item = new Threadmodel({ post, image: imagePath });
     const savedItem = await item.save();
     res.status(201).json(savedItem);
   } catch (err) {
