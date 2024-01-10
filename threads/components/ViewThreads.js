@@ -6,7 +6,7 @@ import { useNavigation } from '@react-navigation/native';
 
 const ViewThreads = () => {
   const [posts, setPosts] = useState([]);
-  const [images, setImages] = useState([]);
+  // const [images, setImages] = useState([]);
   // const [isPressed, setIsPressed] = useState(false);
   const [pressedPosts, setPressedPosts] = useState({});
 
@@ -18,11 +18,6 @@ const ViewThreads = () => {
       .then((response) => response.json())
       .then((data) => setPosts(data))
       .catch((error) => console.error('Error fetching posts:', error));
-
-    // fetch('http://192.168.14.69:6000/thread')
-    // .then((response) => response.json())
-    // .then((data) => setImages(data))
-    // .catch((error) => console.error('Error fetching images:', error));
   }, [posts]);
   const navigation = useNavigation();
   
