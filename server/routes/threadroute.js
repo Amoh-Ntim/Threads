@@ -25,11 +25,17 @@ router.post('/thread', upload.single('image'), async (req, res) => {
 
     const item = new Threadmodel({ post, image: imagePath });
     const savedItem = await item.save();
-    res.status(201).json(savedItem);
+
+    // Generate image URL here
+    const imageUrl = req.protocol + '://' + req.get('host') + '/Images/' + path.basename(imagePath);
+
+    // Include imageUrl in response
+    res.status(201).json({ ...savedItem.toJSON(), imageUrl });
   } catch (err) {
-    res.status(400).json({ error: err.message });
+    // ...
   }
 });
+
 
 // Read
 router.get('/thread', async (req, res) => {

@@ -1,11 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import { Image, SafeAreaView, ScrollView, Text, TouchableOpacity, View } from 'react-native';
 import tw from 'twrnc';
-import { useNavigation } from '@react-navigation/native';
+import { useNavigation,useRoute } from '@react-navigation/native';
 
 
 const ViewThreads = () => {
   const [posts, setPosts] = useState([]);
+  const [images, setImages] = useState([]);
   const [isPressed, setIsPressed] = useState(false);
   const [pressedPosts, setPressedPosts] = useState({});
 
@@ -17,15 +18,21 @@ const ViewThreads = () => {
       .then((response) => response.json())
       .then((data) => setPosts(data))
       .catch((error) => console.error('Error fetching posts:', error));
-  }, [posts]);
-  const navigation = useNavigation();
 
+    fetch('http://192.168.14.69:6000/thread')
+    .then((response) => response.json())
+    .then((data) => setImages(data))
+    .catch((error) => console.error('Error fetching images:', error));
+  }, [posts,images]);
+  const navigation = useNavigation();
+  
   const handleDelete = async (id) => {
     try {
       const response = await fetch(`http://192.168.14.69:6000/thread/${id}`, {
         method: 'DELETE',
         headers: {
-          'Content-Type': 'application/json',
+          Accept: 'application/json',
+                    'Content-Type': 'multipart/form-data',
         },
       });
   
@@ -55,6 +62,8 @@ const ViewThreads = () => {
       [id]: !prevState[id]
     }));
   };
+
+
   return (
     <SafeAreaView>
     <View style={tw`flex justify-center items-center`}>
@@ -68,6 +77,13 @@ const ViewThreads = () => {
           <View>
             <Text style={tw`text-lg mb-8`}>{post.post}</Text>
           </View>
+          {images.map((image) => (
+          <View key={image._id}>
+            <Image source={{ uri: image.imageUrl }} style={{ width: 200, height: 200 }}
+            onError={() => console.error('Image loading failed:', post.imageUrl)} />
+          </View>
+          ))}
+          
           {/* view for the buttons */}
           <View style={tw`flex flex-row gap-x-4`}>
           <View>

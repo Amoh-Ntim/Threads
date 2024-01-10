@@ -11,18 +11,19 @@ const NewThread = ({ navigation }) => {
     const [image, setImage] = useState(null);
 
     const handlePost = async () => {
-         try {
+    try {
     let formData = new FormData();
     formData.append('post', post);
 
     // Check if there's an image to upload
     if (image) {
-      let uriParts = image.split('.');
-      let fileType = uriParts[uriParts.length - 1];
+      // let uriParts = image.split('.');
+      const fileType = image.split('.').pop();
+      // let fileType = uriParts[uriParts.length - 1];
 
       formData.append('image', {
         uri: image,
-        name: `photo.${fileType}`,
+        name: image,
         type: `image/${fileType}`,
       });
     }
@@ -30,6 +31,7 @@ const NewThread = ({ navigation }) => {
             const response = await fetch('http://192.168.14.69:6000/thread', {
                 method: 'POST',
                 headers: {
+                  Accept: 'application/json',
                     'Content-Type': 'multipart/form-data',
                 },
                 body: formData,
