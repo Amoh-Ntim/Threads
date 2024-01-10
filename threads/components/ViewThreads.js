@@ -7,7 +7,7 @@ import { useNavigation,useRoute } from '@react-navigation/native';
 const ViewThreads = () => {
   const [posts, setPosts] = useState([]);
   const [images, setImages] = useState([]);
-  const [isPressed, setIsPressed] = useState(false);
+  // const [isPressed, setIsPressed] = useState(false);
   const [pressedPosts, setPressedPosts] = useState({});
 
   const imgDefault = require('../assets/Vectorlike.png');
@@ -19,11 +19,11 @@ const ViewThreads = () => {
       .then((data) => setPosts(data))
       .catch((error) => console.error('Error fetching posts:', error));
 
-    fetch('http://192.168.14.69:6000/thread')
-    .then((response) => response.json())
-    .then((data) => setImages(data))
-    .catch((error) => console.error('Error fetching images:', error));
-  }, [posts,images]);
+    // fetch('http://192.168.14.69:6000/thread')
+    // .then((response) => response.json())
+    // .then((data) => setImages(data))
+    // .catch((error) => console.error('Error fetching images:', error));
+  }, [posts]);
   const navigation = useNavigation();
   
   const handleDelete = async (id) => {
@@ -77,13 +77,12 @@ const ViewThreads = () => {
           <View>
             <Text style={tw`text-lg mb-8`}>{post.post}</Text>
           </View>
-          {images.map((image) => (
-          <View key={image._id}>
-            <Image source={{ uri: image.imageUrl }} style={{ width: 200, height: 200 }}
+          <View>
+          {post.imageUrl && (
+            <Image source={{ uri: post.imageUrl }} style={{ width: 200, height: 200 }}
             onError={() => console.error('Image loading failed:', post.imageUrl)} />
+          )}
           </View>
-          ))}
-          
           {/* view for the buttons */}
           <View style={tw`flex flex-row gap-x-4`}>
           <View>
