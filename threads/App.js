@@ -12,7 +12,9 @@ const Tab = createBottomTabNavigator();
 function App() {
   return (
     <NavigationContainer>
-    <Tab.Navigator>
+    <Tab.Navigator screenOptions={{
+          headerShown: false,  // This line hides the header
+        }}>
       <Tab.Screen 
         name="NewThread" 
         component={NewThread} 

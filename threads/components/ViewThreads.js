@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Image, SafeAreaView, ScrollView, Text, TouchableOpacity, View } from 'react-native';
 import tw from 'twrnc';
-import { useNavigation,useRoute } from '@react-navigation/native';
+import { useNavigation } from '@react-navigation/native';
 
 
 const ViewThreads = () => {
@@ -65,6 +65,7 @@ const ViewThreads = () => {
 
 
   return (
+    <View style={{ flex: 1 }}>
     <SafeAreaView>
     <View style={tw`flex justify-center items-center`}>
         <Image
@@ -112,6 +113,7 @@ const ViewThreads = () => {
         ))}
       </ScrollView>
     </SafeAreaView>
+    </View>
   );
 };
 

@@ -104,7 +104,7 @@ const NewThread = ({ navigation }) => {
             <View style={tw`flex-row justify-between items-center px-4`}>
         <Text>Anyone can reply</Text>
         <TouchableOpacity onPress={handlePost}>
-        <Text style={tw`rounded-full py-2 px-4 bg-gray-400 text-white`}>Post</Text>
+        <Text style={tw`rounded-full py-2 px-4 bg-gray-400 text-white bg-[#1FB9FC]`}>Post</Text>
         </TouchableOpacity>
       </View>
      </SafeAreaView>
