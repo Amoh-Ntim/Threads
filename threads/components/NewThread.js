@@ -23,12 +23,12 @@ const NewThread = ({ navigation }) => {
 
       formData.append('image', {
         uri: image,
-        name: image,
+        name: 'image',
         type: `image/${fileType}`,
       });
     }
     
-            const response = await fetch('http://192.168.14.69:6000/thread', {
+            const response = await fetch('http://192.168.15.69:6000/thread', {
                 method: 'POST',
                 headers: {
                   Accept: 'application/json',
@@ -42,7 +42,7 @@ const NewThread = ({ navigation }) => {
             }
     
             const responseData = await response.json();
-            console.log(responseData);
+            console.log('Full Response Data:', responseData);
     
             // Handle successful post (e.g., clear text input, display success message)
             // alert('New Post added successfully!');
@@ -104,7 +104,7 @@ const NewThread = ({ navigation }) => {
             <View style={tw`flex-row justify-between items-center px-4`}>
         <Text>Anyone can reply</Text>
         <TouchableOpacity onPress={handlePost}>
-        <Text style={tw`rounded-full py-2 px-4 bg-gray-400 text-white`}>Post</Text>
+        <Text style={tw`rounded-full py-2 px-4 bg-gray-400 text-white bg-[#1FB9FC]`}>Post</Text>
         </TouchableOpacity>
       </View>
      </SafeAreaView>

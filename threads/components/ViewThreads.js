@@ -1,12 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import { Image, SafeAreaView, ScrollView, Text, TouchableOpacity, View } from 'react-native';
 import tw from 'twrnc';
-import { useNavigation,useRoute } from '@react-navigation/native';
+import { useNavigation } from '@react-navigation/native';
 
 
 const ViewThreads = () => {
   const [posts, setPosts] = useState([]);
-  const [images, setImages] = useState([]);
+  // const [images, setImages] = useState([]);
   // const [isPressed, setIsPressed] = useState(false);
   const [pressedPosts, setPressedPosts] = useState({});
 
@@ -14,21 +14,16 @@ const ViewThreads = () => {
   const imgOther = require('../assets/likedtrue.png');
 
   useEffect(() => {
-    fetch('http://192.168.14.69:6000/thread')
+    fetch('http://192.168.15.69:6000/thread')
       .then((response) => response.json())
       .then((data) => setPosts(data))
       .catch((error) => console.error('Error fetching posts:', error));
-
-    // fetch('http://192.168.14.69:6000/thread')
-    // .then((response) => response.json())
-    // .then((data) => setImages(data))
-    // .catch((error) => console.error('Error fetching images:', error));
   }, [posts]);
   const navigation = useNavigation();
   
   const handleDelete = async (id) => {
     try {
-      const response = await fetch(`http://192.168.14.69:6000/thread/${id}`, {
+      const response = await fetch(`http://192.168.15.69:6000/thread/${id}`, {
         method: 'DELETE',
         headers: {
           Accept: 'application/json',
@@ -39,7 +34,7 @@ const ViewThreads = () => {
       if (!response.ok) {
         throw new Error(`HTTP error! status: ${response.status}`);
       }
-      const updatedPosts = await fetch('http://192.168.14.69:6000/thread').then((response) => response.json());
+      const updatedPosts = await fetch('http://localhost:6000/thread').then((response) => response.json());
       setPosts(updatedPosts);
       const responseData = await response.json();
       console.log(responseData);
@@ -65,6 +60,7 @@ const ViewThreads = () => {
 
 
   return (
+    <View style={{ flex: 1 }}>
     <SafeAreaView>
     <View style={tw`flex justify-center items-center`}>
         <Image
@@ -79,7 +75,7 @@ const ViewThreads = () => {
           </View>
           <View>
           {post.imageUrl && (
-            <Image source={{ uri: post.imageUrl }} style={{ width: 200, height: 200 }}
+            <Image key={post._id} source={{ uri: post.imageUrl }} style={{ width: 200, height: 200 }}
             onError={() => console.error('Image loading failed:', post.imageUrl)} />
           )}
           </View>
@@ -112,6 +108,7 @@ const ViewThreads = () => {
         ))}
       </ScrollView>
     </SafeAreaView>
+    </View>
   );
 };
 
