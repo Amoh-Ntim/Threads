@@ -17,9 +17,9 @@ const NewThread = ({ navigation }) => {
 
     // Check if there's an image to upload
     if (image) {
-      // let uriParts = image.split('.');
-      const fileType = image.split('.').pop();
-      // let fileType = uriParts[uriParts.length - 1];
+      let uriParts = image.split('.');
+      // const fileType = image.split('.').pop();
+      let fileType = uriParts[uriParts.length - 1];
 
       formData.append('image', {
         uri: image,
