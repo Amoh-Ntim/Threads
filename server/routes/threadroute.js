@@ -11,7 +11,7 @@ const storage = multer.diskStorage({
     cb(null, 'Images');
   },
   filename: (req, file, cb) => {
-    cb(null, Date.now() + path.extname(file.originalname));
+    cb(null, file.fieldname + "_" + Date.now() + path.extname(file.originalname));
   },
 });
 
@@ -27,7 +27,7 @@ router.post('/thread', upload.single('image'), async (req, res) => {
     const savedItem = await item.save();
 
     // Generate image URL here
-    const imageUrl = req.protocol + '://' + req.get('host') + '/Images' + path.basename(imagePath);
+    const imageUrl = req.protocol + '://' + req.get('host') + '/Images/' + path.basename(imagePath);
 
     // Include imageUrl in response
     res.status(201).json({ ...savedItem.toJSON(), imageUrl });

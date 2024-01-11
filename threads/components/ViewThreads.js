@@ -14,7 +14,7 @@ const ViewThreads = () => {
   const imgOther = require('../assets/likedtrue.png');
 
   useEffect(() => {
-    fetch('http://192.168.14.69:6000/thread')
+    fetch('http://192.168.15.69:6000/thread')
       .then((response) => response.json())
       .then((data) => setPosts(data))
       .catch((error) => console.error('Error fetching posts:', error));
@@ -23,7 +23,7 @@ const ViewThreads = () => {
   
   const handleDelete = async (id) => {
     try {
-      const response = await fetch(`http://192.168.14.69:6000/thread/${id}`, {
+      const response = await fetch(`http://192.168.15.69:6000/thread/${id}`, {
         method: 'DELETE',
         headers: {
           Accept: 'application/json',
@@ -34,7 +34,7 @@ const ViewThreads = () => {
       if (!response.ok) {
         throw new Error(`HTTP error! status: ${response.status}`);
       }
-      const updatedPosts = await fetch('http://192.168.14.69:6000/thread').then((response) => response.json());
+      const updatedPosts = await fetch('http://localhost:6000/thread').then((response) => response.json());
       setPosts(updatedPosts);
       const responseData = await response.json();
       console.log(responseData);
@@ -75,7 +75,7 @@ const ViewThreads = () => {
           </View>
           <View>
           {post.imageUrl && (
-            <Image source={{ uri: post.imageUrl }} style={{ width: 200, height: 200 }}
+            <Image key={post._id} source={{ uri: post.imageUrl }} style={{ width: 200, height: 200 }}
             onError={() => console.error('Image loading failed:', post.imageUrl)} />
           )}
           </View>

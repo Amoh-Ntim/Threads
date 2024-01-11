@@ -23,12 +23,12 @@ const NewThread = ({ navigation }) => {
 
       formData.append('image', {
         uri: image,
-        name: image,
+        name: 'image',
         type: `image/${fileType}`,
       });
     }
     
-            const response = await fetch('http://192.168.14.69:6000/thread', {
+            const response = await fetch('http://192.168.15.69:6000/thread', {
                 method: 'POST',
                 headers: {
                   Accept: 'application/json',
@@ -42,7 +42,7 @@ const NewThread = ({ navigation }) => {
             }
     
             const responseData = await response.json();
-            console.log(responseData);
+            console.log('Full Response Data:', responseData);
     
             // Handle successful post (e.g., clear text input, display success message)
             // alert('New Post added successfully!');
