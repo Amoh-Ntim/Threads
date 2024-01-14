@@ -2,7 +2,7 @@ const Threadmodel = require('../models/threadmodel');
 const express = require('express');
 const router = express.Router();
 const multer = require('multer');
-
+const fs = require('fs');
 const path = require('path');
 
 // Set up multer for handling image uploads
@@ -18,34 +18,51 @@ const storage = multer.diskStorage({
 const upload = multer({ storage: storage });
 
 // Create
+// ...
+
 router.post('/thread', upload.single('image'), async (req, res) => {
   try {
     const { post } = req.body;
-    const imagePath = req.file ? req.file.path : null;
+
+    // Check if an image was provided in the request
+      // Store the path to the uploaded file
+      const imagePath = req.file.path;
+
 
     const item = new Threadmodel({ post, image: imagePath });
     const savedItem = await item.save();
 
-    // Generate image URL here
-    const imageUrl = req.protocol + '://' + req.get('host') + '/Images/' + path.basename(imagePath);
+    // Generate and store image URL
+    const imageUrl = image; // Use savedItem._id
+    savedItem.image.url = imageUrl;
+    await savedItem.save();
 
-    // Include imageUrl in response
-    res.status(201).json({ ...savedItem.toJSON(), imageUrl });
+    res.status(201).json(savedItem);
   } catch (err) {
-    // ...
+    // ... error handling
   }
 });
+
+
 
 
 // Read
-router.get('/thread', async (req, res) => {
+router.get('/threads', async (req, res) => {
   try {
-    const items = await Threadmodel.find();
-    res.json(items);
+    const posts = await Threadmodel.find(); // Retrieve all posts
+    const formattedPosts = posts.map((post) => ({
+      _id: post._id,
+      post: post.post,
+      imageUrl: post.image.url, // Assuming image.url stores the image URL
+    }));
+    res.json(formattedPosts);
   } catch (err) {
-    res.status(500).json({ error: err.message });
+    console.error(err);
+    res.status(500).json({ error: 'Failed to fetch posts' });
   }
 });
+
+
 
 // Update
 router.put('/thread/:id', async (req, res) => {

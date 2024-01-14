@@ -5,10 +5,17 @@ const cors = require('cors');
 const app = express();
 const route = require('../server/routes/threadroute');
 const path = require('path');
+const corsOptions = {
+  origin: 'http://192.168.51.69:6000', // replace with the origin of your frontend app
+  methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
+  allowedHeaders: ['Content-Type', 'Accept'],
+};
+
+
 // Middleware
-app.use('/Images', express.static(path.join(__dirname, 'Images')));
+app.use(express.static(path.join(__dirname, 'Images'), { index: false })); // Remove trailing slash
 app.use(bodyParser.json());
-app.use(cors());
+app.use(cors(corsOptions));
 app.use(route);
 const port = 6000;
 const uri = 'mongodb+srv://amohntim:threadss@threadscluster.za8dfkw.mongodb.net/?retryWrites=true&w=majority'

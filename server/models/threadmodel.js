@@ -6,7 +6,8 @@ post: {
     required: true,
 },image: {
   data: Buffer,
-  contentType: String
+  contentType: String,
+  url: String,
 },
 
   // Add more fields as needed
