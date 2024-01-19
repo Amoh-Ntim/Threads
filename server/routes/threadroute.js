@@ -4,11 +4,20 @@ const router = express.Router();
 const multer = require('multer');
 const fs = require('fs');
 const path = require('path');
+var url = require('url');
+
+function fullUrl(req) {
+  return url.format({
+    protocol: req.protocol,
+    host: req.get('host'),
+    pathname: req.originalUrl
+  });
+}
 
 // Set up multer for handling image uploads
 const storage = multer.diskStorage({
   destination: (req, file, cb) => {
-    cb(null, 'Images');
+    cb(null, 'Images/');
   },
   filename: (req, file, cb) => {
     cb(null, file.fieldname + "_" + Date.now() + path.extname(file.originalname));
@@ -33,13 +42,14 @@ router.post('/thread', upload.single('image'), async (req, res) => {
     const savedItem = await item.save();
 
     // Generate and store image URL
-    const imageUrl = image; // Use savedItem._id
+    const imageUrl = req.protocol + '://' + req.get('host') + '/Images/' + req.file.filename; // For URL storage
     savedItem.image.url = imageUrl;
     await savedItem.save();
 
     res.status(201).json(savedItem);
   } catch (err) {
-    // ... error handling
+    console.error(err); // Log the error for debugging
+    res.status(500).json({ error: 'Failed to create post. Please try again.' }); // Informative message for the user
   }
 });
 
@@ -47,15 +57,16 @@ router.post('/thread', upload.single('image'), async (req, res) => {
 
 
 // Read
-router.get('/threads', async (req, res) => {
+router.get('/thread', async (req, res) => {
   try {
-    const posts = await Threadmodel.find(); // Retrieve all posts
-    const formattedPosts = posts.map((post) => ({
-      _id: post._id,
-      post: post.post,
-      imageUrl: post.image.url, // Assuming image.url stores the image URL
+    console.log(fullUrl(req));
+    const threads = await Threadmodel.find(); // Retrieve all posts
+    const formattedThreads = threads.map((thread) => ({
+      _id: threads._id,
+      post: thread.post,
+      imageUrl: thread.image.url, // Assuming image.url stores the image URL
     }));
-    res.json(formattedPosts);
+    res.json(formattedThreads);
   } catch (err) {
     console.error(err);
     res.status(500).json({ error: 'Failed to fetch posts' });

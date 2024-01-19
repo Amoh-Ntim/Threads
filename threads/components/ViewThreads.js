@@ -1,94 +1,116 @@
-  import React, { useState, useEffect } from 'react';
-  import { Image, SafeAreaView, ScrollView, Text, TouchableOpacity, View } from 'react-native';
-  import tw from 'twrnc';
-  import axios from 'axios';
-  import { useNavigation } from '@react-navigation/native';
-    
-    const ViewThreads = () => {
-      const [posts, setPosts] = useState([]);
-      const [pressedPosts, setPressedPosts] = useState({});
-    
-      const imgDefault = require('../assets/Vectorlike.png');
-      const imgOther = require('../assets/likedtrue.png');
-    
-      const navigation = useNavigation();
-    
-      useEffect(() => {
-        const fetchPosts = async () => {
-          try {
-            const response = await axios.get('http://192.168.51.69:6000/threads');
-            setPosts(response.data);
-          } catch (error) {
-            console.error('Error fetching posts:', error);
-            // Handle errors appropriately
-          }
-        };
-    
-        fetchPosts();
-      }, []);
-    
-      
-    
-    const handlePress = (id) => {
-      setPressedPosts(prevState => ({
-        ...prevState,
-        [id]: !prevState[id]
-      }));
-    };
+import React, { useState, useEffect } from 'react';
+import { Image, SafeAreaView, ScrollView, Text, TouchableOpacity, View } from 'react-native';
+import tw from 'twrnc';
+import { useNavigation,useRoute } from '@react-navigation/native';
 
 
-    return (
-      <View style={{ flex: 1 }}>
-      <SafeAreaView>
-      <View style={tw`flex justify-center items-center`}>
-          <Image
-              source={require('../assets/Vectorlogothreads.png')}
-          />
-      </View> 
-          <ScrollView>
-          {posts.slice(0).reverse().map((post) => (
-      <View key={post._id} style={tw`p-4 border-b border-gray-200`}>
-        <View>
-          <Text style={tw`text-lg mb-8`}>{post.post}</Text>
-        </View>
-        <View>
-          {post.image && post.image.url && (
-            <Image source={{ uri: post.image.url }} style={{ width: 200, height: 200 }} />
-          )}
-        </View>
+const ViewThreads = () => {
+  // const [posts, setPosts] = useState([]);
+  // const [images, setImages] = useState([]);
+  // const [isPressed, setIsPressed] = useState(false);
+  const [pressedPosts, setPressedPosts] = useState({});
+  const [threads, setThreads] = useState([]);
 
-              {/* view for the buttons */}
-              <View style={tw`flex flex-row gap-x-4`}>
-              <View>
-              <TouchableOpacity onPress={() => handlePress(post._id)}>
-                    <Image source={pressedPosts[post._id] ? imgOther : imgDefault} />
-              </TouchableOpacity>
-              </View> 
-              <View style={tw``}>
-              <Image
-                source={require('../assets/Framecomment.png')}
-              />
-              </View>
-              <View style={tw``}>
-              <Image
-                source={require('../assets/Framerepost.png')}
-              />
-              </View>
-              <TouchableOpacity onPress={() => handleDelete(post._id)}>
-              <View style={tw``}>
-              <Image
-                source={require('../assets/FiTrash2.png')}
-              />
-              </View>
-              </TouchableOpacity>
-              </View>
-              </View>
-            ))}
-        </ScrollView>
-      </SafeAreaView>
-      </View>
-    );
+  const imgDefault = require('../assets/Vectorlike.png');
+  const imgOther = require('../assets/likedtrue.png');
+
+  useEffect(() => {
+    fetch('http://192.168.220.69:6000/thread')
+      .then(response => response.json())
+      .then(data => setThreads(data))
+      .catch(error => console.error(error));
+  }, []);
+
+  const navigation = useNavigation();
+  
+  const handleDelete = async (id) => {
+    try {
+      const response = await fetch(`http://192.168.220.69:6000/thread/${id}`, {
+        method: 'DELETE',
+        headers: {
+          Accept: 'application/json',
+                    'Content-Type': 'multipart/form-data',
+        },
+      });
+  
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+      const updatedPosts = await fetch('http://192.168.220.69:6000/thread').then((response) => response.json());
+      setPosts(updatedPosts);
+      const responseData = await response.json();
+      console.log(responseData);
+      navigation.navigate('ViewThreads');
+    } catch (error) {
+      console.error('Error deleting thread:', error);
+  
+      // Provide user-friendly error messages
+      if (error instanceof TypeError && error.message === 'Failed to fetch') {
+        alert('Network error: Check your connection and try again.');
+      } else {
+        alert('Server error: Please try again later.');
+      }
+    }
+  };
+  
+  const handlePress = (id) => {
+    setPressedPosts(prevState => ({
+      ...prevState,
+      [id]: !prevState[id]
+    }));
   };
 
-  export default ViewThreads;
+
+  return (
+    <SafeAreaView>
+    <View style={tw`flex justify-center items-center mt-8 `}>
+        <Image
+            source={require('../assets/Vectorlogothreads.png')}
+        />
+    </View> 
+      <ScrollView>
+        {threads.slice(0).reverse().map((thread) => (
+          <View key={thread._id} style={tw`p-4 border-b border-gray-200`}>
+          <View>
+            <Text style={tw`text-lg mb-8`}>{thread.post}</Text>
+          </View>
+          <View>
+          {thread.imageUrl && (
+            <Image source={{ uri: thread.image }} style={{ width: 200, height: 200 }}
+            onError={() => console.error('Image loading failed:', thread.image.url)} />
+          )}
+          </View>
+          {/* view for the buttons */}
+          <View style={tw`flex flex-row gap-x-4`}>
+          <View>
+          <TouchableOpacity onPress={() => handlePress(thread._id)}>
+                <Image source={pressedPosts[thread._id] ? imgOther : imgDefault} />
+          </TouchableOpacity>
+           </View> 
+           <View style={tw``}>
+          <Image
+            source={require('../assets/Framecomment.png')}
+          />
+           </View>
+           <View style={tw``}>
+          <Image
+            source={require('../assets/Framerepost.png')}
+          />
+           </View>
+           <TouchableOpacity onPress={() => handleDelete(thread._id)}>
+           <View style={tw``}>
+          <Image
+            source={require('../assets/FiTrash2.png')}
+          />
+           </View>
+           </TouchableOpacity>
+          </View>
+          </View>
+        ))}
+      </ScrollView>
+    </SafeAreaView>
+  );
+};
+
+export default ViewThreads;
 
