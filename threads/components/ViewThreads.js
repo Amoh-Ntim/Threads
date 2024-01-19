@@ -15,7 +15,7 @@ const ViewThreads = () => {
   const imgOther = require('../assets/likedtrue.png');
 
   useEffect(() => {
-    fetch('http://192.168.161.69:6000/thread')
+    fetch('http://192.168.220.69:6000/thread')
       .then(response => response.json())
       .then(data => setThreads(data))
       .catch(error => console.error(error));
@@ -25,7 +25,7 @@ const ViewThreads = () => {
   
   const handleDelete = async (id) => {
     try {
-      const response = await fetch(`http://192.168.161.69:6000/thread/${id}`, {
+      const response = await fetch(`http://192.168.220.69:6000/thread/${id}`, {
         method: 'DELETE',
         headers: {
           Accept: 'application/json',
@@ -36,7 +36,7 @@ const ViewThreads = () => {
       if (!response.ok) {
         throw new Error(`HTTP error! status: ${response.status}`);
       }
-      const updatedPosts = await fetch('http://192.168.161.69:6000/thread').then((response) => response.json());
+      const updatedPosts = await fetch('http://192.168.220.69:6000/thread').then((response) => response.json());
       setPosts(updatedPosts);
       const responseData = await response.json();
       console.log(responseData);
@@ -75,15 +75,15 @@ const ViewThreads = () => {
             <Text style={tw`text-lg mb-8`}>{thread.post}</Text>
           </View>
           <View>
-          {post.imageUrl && (
-            <Image source={{ uri: thread.image.url }} style={{ width: 200, height: 200 }}
+          {thread.imageUrl && (
+            <Image source={{ uri: thread.image }} style={{ width: 200, height: 200 }}
             onError={() => console.error('Image loading failed:', thread.image.url)} />
           )}
           </View>
           {/* view for the buttons */}
           <View style={tw`flex flex-row gap-x-4`}>
           <View>
-          <TouchableOpacity onPress={() => handlePress(post._id)}>
+          <TouchableOpacity onPress={() => handlePress(thread._id)}>
                 <Image source={pressedPosts[thread._id] ? imgOther : imgDefault} />
           </TouchableOpacity>
            </View> 

@@ -42,7 +42,7 @@ router.post('/thread', upload.single('image'), async (req, res) => {
     const savedItem = await item.save();
 
     // Generate and store image URL
-    const imageUrl = req.protocol + '://' + req.get('host') + '/Images' + req.file.filename; // For URL storage
+    const imageUrl = req.protocol + '://' + req.get('host') + '/Images/' + req.file.filename; // For URL storage
     savedItem.image.url = imageUrl;
     await savedItem.save();
 
@@ -57,10 +57,10 @@ router.post('/thread', upload.single('image'), async (req, res) => {
 
 
 // Read
-router.get('/threads', async (req, res) => {
+router.get('/thread', async (req, res) => {
   try {
     console.log(fullUrl(req));
-    const posts = await Threadmodel.find(); // Retrieve all posts
+    const threads = await Threadmodel.find(); // Retrieve all posts
     const formattedThreads = threads.map((thread) => ({
       _id: threads._id,
       post: thread.post,
