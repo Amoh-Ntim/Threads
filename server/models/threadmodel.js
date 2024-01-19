@@ -5,9 +5,7 @@ post: {
     type: String,
     required: true,
 },image: {
-  data: Buffer,
-  contentType: String,
-  url: String,
+  url: String, // Store only the image URL
 },
 
   // Add more fields as needed
