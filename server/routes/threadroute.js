@@ -62,7 +62,7 @@ router.get('/thread', async (req, res) => {
     console.log(fullUrl(req));
     const threads = await Threadmodel.find(); // Retrieve all posts
     const formattedThreads = threads.map((thread) => ({
-      _id: threads._id,
+      _id: thread._id,
       post: thread.post,
       imageUrl: thread.image.url, // Assuming image.url stores the image URL
     }));

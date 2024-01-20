@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Image, SafeAreaView, ScrollView, Text, TouchableOpacity, View } from 'react-native';
 import tw from 'twrnc';
-import { useNavigation,useRoute } from '@react-navigation/native';
+import { useNavigation } from '@react-navigation/native';
 
 
 const ViewThreads = () => {
@@ -15,11 +15,19 @@ const ViewThreads = () => {
   const imgOther = require('../assets/likedtrue.png');
 
   useEffect(() => {
-    fetch('http://192.168.220.69:6000/thread')
-      .then(response => response.json())
-      .then(data => setThreads(data))
-      .catch(error => console.error(error));
+    const fetchData = async () => {
+      try {
+        const response = await fetch('http://192.168.220.69:6000/thread');
+        const data = await response.json();
+        setThreads(data);
+      } catch (error) {
+        console.error(error);
+      }
+    };
+  
+    fetchData();
   }, []);
+  
 
   const navigation = useNavigation();
   
@@ -29,15 +37,17 @@ const ViewThreads = () => {
         method: 'DELETE',
         headers: {
           Accept: 'application/json',
-                    'Content-Type': 'multipart/form-data',
+          'Content-Type': 'multipart/form-data',
         },
       });
   
       if (!response.ok) {
         throw new Error(`HTTP error! status: ${response.status}`);
       }
-      const updatedPosts = await fetch('http://192.168.220.69:6000/thread').then((response) => response.json());
-      setPosts(updatedPosts);
+  
+      // Remove the deleted thread from local state
+      setThreads(threads => threads.filter(thread => thread._id !== id));
+  
       const responseData = await response.json();
       console.log(responseData);
       navigation.navigate('ViewThreads');
@@ -52,6 +62,7 @@ const ViewThreads = () => {
       }
     }
   };
+  
   
   const handlePress = (id) => {
     setPressedPosts(prevState => ({
