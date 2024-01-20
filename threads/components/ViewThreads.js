@@ -62,14 +62,12 @@ const ViewThreads = () => {
     }
   };
   
-  
   const handlePress = (id) => {
     setPressedPosts(prevState => ({
       ...prevState,
       [id]: !prevState[id]
     }));
   };
-
 
   return (
     <SafeAreaView>
@@ -102,7 +100,7 @@ const ViewThreads = () => {
             source={require('../assets/Framecomment.png')}
           />
            </View>
-           <View style={tw``}>
+           <View>
           <Image
             source={require('../assets/Framerepost.png')}
           />
