@@ -95,7 +95,7 @@ const ViewThreads = () => {
                 <Image source={pressedPosts[thread._id] ? imgOther : imgDefault} />
           </TouchableOpacity>
            </View> 
-           <View style={tw``}>
+           <View>
           <Image
             source={require('../assets/Framecomment.png')}
           />
@@ -106,7 +106,7 @@ const ViewThreads = () => {
           />
            </View>
            <TouchableOpacity onPress={() => handleDelete(thread._id)}>
-           <View style={tw``}>
+           <View>
           <Image
             source={require('../assets/FiTrash2.png')}
           />
