@@ -24,7 +24,6 @@ const ViewThreads = () => {
         console.error(error);
       }
     };
-  
     fetchData();
   }, []);
   

@@ -11,7 +11,6 @@ const corsOptions = {
   allowedHeaders: ['Content-Type', 'Accept'],
 };
 
-
 // Middleware
 app.use(express.static(path.join(__dirname, 'Images'), { index: false })); // Remove trailing slash
 app.use(bodyParser.json());
@@ -28,7 +27,4 @@ mongoose.connect(uri)
   })
   .catch(err => console.error(err));
 
-
-
-// Routes (we'll add them later)
 
