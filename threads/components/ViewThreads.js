@@ -62,14 +62,12 @@ const ViewThreads = () => {
     }
   };
   
-  
   const handlePress = (id) => {
     setPressedPosts(prevState => ({
       ...prevState,
       [id]: !prevState[id]
     }));
   };
-
 
   return (
     <SafeAreaView>
@@ -97,18 +95,18 @@ const ViewThreads = () => {
                 <Image source={pressedPosts[thread._id] ? imgOther : imgDefault} />
           </TouchableOpacity>
            </View> 
-           <View style={tw``}>
+           <View>
           <Image
             source={require('../assets/Framecomment.png')}
           />
            </View>
-           <View style={tw``}>
+           <View>
           <Image
             source={require('../assets/Framerepost.png')}
           />
            </View>
            <TouchableOpacity onPress={() => handleDelete(thread._id)}>
-           <View style={tw``}>
+           <View>
           <Image
             source={require('../assets/FiTrash2.png')}
           />
