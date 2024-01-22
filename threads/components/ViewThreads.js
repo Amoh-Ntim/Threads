@@ -17,7 +17,7 @@ const ViewThreads = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await fetch('http://192.168.220.69:6000/thread');
+        const response = await fetch('http://192.168.170.69:6000/thread');
         const data = await response.json();
         setThreads(data);
       } catch (error) {
@@ -32,7 +32,7 @@ const ViewThreads = () => {
   
   const handleDelete = async (id) => {
     try {
-      const response = await fetch(`http://192.168.220.69:6000/thread/${id}`, {
+      const response = await fetch(`http://192.168.170.69:6000/thread/${id}`, {
         method: 'DELETE',
         headers: {
           Accept: 'application/json',
