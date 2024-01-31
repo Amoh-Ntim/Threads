@@ -28,7 +28,7 @@ const NewThread = ({ navigation }) => {
       });
     }
     
-            const response = await fetch('http://192.168.170.69:6000/thread', {
+            const response = await fetch('http://192.168.109.69:6000/thread', {
                 method: 'POST',
                 headers: {
                   Accept: 'application/json',
@@ -36,13 +36,13 @@ const NewThread = ({ navigation }) => {
                 },
                 body: formData,
             });
-    
+            
             if (!response.ok) {
                 throw new Error(`HTTP error! status: ${response.status}`);
             }
     
             const responseData = await response.json();
-            const imageUrl = responseData.imageUrl;
+            // const imageUrl = responseData.imageUrl;
             console.log(responseData);
     
             // alert('New Post added successfully!');
@@ -74,7 +74,8 @@ const NewThread = ({ navigation }) => {
     console.log(result);
 
     if (!result.cancelled) {
-      setImage(result.assets[0].uri);
+      setImage(result.uri);
+      // setImage(result.assets[0].uri);
     }
   };
     return (

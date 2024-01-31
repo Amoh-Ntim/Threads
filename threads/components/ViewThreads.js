@@ -2,6 +2,8 @@ import React, { useState, useEffect } from 'react';
 import { Image, SafeAreaView, ScrollView, Text, TouchableOpacity, View } from 'react-native';
 import tw from 'twrnc';
 import { useNavigation } from '@react-navigation/native';
+import FastImage from 'react-native-fast-image';
+
 
 
 const ViewThreads = () => {
@@ -10,21 +12,23 @@ const ViewThreads = () => {
   // const [isPressed, setIsPressed] = useState(false);
   const [pressedPosts, setPressedPosts] = useState({});
   const [threads, setThreads] = useState([]);
+  const [imageUrl, setImageUrl] = useState('');
 
   const imgDefault = require('../assets/Vectorlike.png');
   const imgOther = require('../assets/likedtrue.png');
 
   useEffect(() => {
-    const fetchData = async () => {
+    const fetchThreads = async () => {
       try {
-        const response = await fetch('http://192.168.170.69:6000/thread');
-        const data = await response.json();
-        setThreads(data);
+        const response = await fetch('http://192.168.109.69:6000/thread');
+        const threadsData = await response.json();
+        setThreads(threadsData);
       } catch (error) {
         console.error(error);
       }
     };
-    fetchData();
+
+    fetchThreads();
   }, []);
   
 
@@ -32,7 +36,7 @@ const ViewThreads = () => {
   
   const handleDelete = async (id) => {
     try {
-      const response = await fetch(`http://192.168.170.69:6000/thread/${id}`, {
+      const response = await fetch(`http://192.168.109.69:6000/thread/${id}`, {
         method: 'DELETE',
         headers: {
           Accept: 'application/json',
@@ -83,10 +87,11 @@ const ViewThreads = () => {
             <Text style={tw`text-lg mb-8`}>{thread.post}</Text>
           </View>
           <View>
-          {thread.imageUrl && (
-            <Image source={{ uri: thread.image }} style={{ width: 200, height: 200 }}
-            onError={() => console.error('Image loading failed:', thread.image.url)} />
-          )}
+            <FastImage
+            source={{ uri: thread.image.url }}
+            style={{ width: 200, height: 200 }}
+            onError={() => console.error('Image loading failed:', thread.image.url)}
+          />         
           </View>
           {/* view for the buttons */}
           <View style={tw`flex flex-row gap-x-4`}>

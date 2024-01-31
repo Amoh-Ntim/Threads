@@ -43,6 +43,7 @@ router.post('/thread', upload.single('image'), async (req, res) => {
 
     // Generate and store image URL
     const imageUrl = req.protocol + '://' + req.get('host') + '/Images/' + req.file.filename; // For URL storage
+    console.log('Image URL:', imageUrl);
     savedItem.image.url = imageUrl;
     await savedItem.save();
 
