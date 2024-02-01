@@ -12,7 +12,7 @@ const ViewThreads = () => {
   // const [isPressed, setIsPressed] = useState(false);
   const [pressedPosts, setPressedPosts] = useState({});
   const [threads, setThreads] = useState([]);
-  const [imageUrl, setImageUrl] = useState('');
+  // const [imageUrl, setImageUrl] = useState('');
 
   const imgDefault = require('../assets/Vectorlike.png');
   const imgOther = require('../assets/likedtrue.png');

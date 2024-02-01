@@ -2,7 +2,7 @@ const Threadmodel = require('../models/threadmodel');
 const express = require('express');
 const router = express.Router();
 const multer = require('multer');
-const fs = require('fs');
+// const fs = require('fs');
 const path = require('path');
 var url = require('url');
 
