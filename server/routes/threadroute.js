@@ -65,7 +65,7 @@ router.get('/thread', async (req, res) => {
     const formattedThreads = threads.map((thread) => ({
       _id: thread._id,
       post: thread.post,
-      imageUrl: thread.image.url, // Assuming image.url stores the image URL
+      imageUrl: thread.image ? thread.image.url : null, // Use thread.image.url if thread.image is not undefined, otherwise use null
     }));
     res.json(formattedThreads);
   } catch (err) {
@@ -73,7 +73,6 @@ router.get('/thread', async (req, res) => {
     res.status(500).json({ error: 'Failed to fetch posts' });
   }
 });
-
 
 
 // Update
