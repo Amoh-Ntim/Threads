@@ -20,7 +20,7 @@ const ViewThreads = () => {
   useEffect(() => {
     const fetchThreads = async () => {
       try {
-        const response = await fetch('http://192.168.109.69:6000/thread');
+        const response = await fetch('http://192.168.255.69:6000/thread');
         const threadsData = await response.json();
         setThreads(threadsData);
       } catch (error) {
@@ -36,7 +36,7 @@ const ViewThreads = () => {
   
   const handleDelete = async (id) => {
     try {
-      const response = await fetch(`http://192.168.109.69:6000/thread/${id}`, {
+      const response = await fetch(`http://192.168.255.69:6000/thread/${id}`, {
         method: 'DELETE',
         headers: {
           Accept: 'application/json',
@@ -87,11 +87,15 @@ const ViewThreads = () => {
             <Text style={tw`text-lg mb-8`}>{thread.post}</Text>
           </View>
           <View>
-            <FastImage
-            source={{ uri: thread.image.url }}
+          {
+            thread.image && (
+            <Image
+            source={{ uri: `http://192.168.109.69:6000/Images/image.${fileType}` }}
             style={{ width: 200, height: 200 }}
             onError={() => console.error('Image loading failed:', thread.image.url)}
           />         
+            )    
+          }
           </View>
           {/* view for the buttons */}
           <View style={tw`flex flex-row gap-x-4`}>
