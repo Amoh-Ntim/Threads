@@ -23,12 +23,12 @@ const NewThread = ({ navigation }) => {
 
       formData.append('image', {
         uri: image,
-        name: image,
+        name: `image.${fileType}`,
         type: `image/${fileType}`,
       });
     }
     
-            const response = await fetch('http://192.168.109.69:6000/thread', {
+            const response = await fetch('http://192.168.255.69:6000/thread', {
                 method: 'POST',
                 headers: {
                   Accept: 'application/json',
@@ -74,8 +74,8 @@ const NewThread = ({ navigation }) => {
     console.log(result);
 
     if (!result.cancelled) {
-      setImage(result.uri);
-      // setImage(result.assets[0].uri);
+      // setImage(result.uri);
+      setImage(result.assets[0].uri);
     }
   };
     return (

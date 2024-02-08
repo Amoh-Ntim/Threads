@@ -33,19 +33,13 @@ router.post('/thread', upload.single('image'), async (req, res) => {
   try {
     const { post } = req.body;
 
-    // Check if an image was provided in the request
-      // Store the path to the uploaded file
-      const imagePath = req.file.path;
-
-
-    const item = new Threadmodel({ post, image: imagePath });
-    const savedItem = await item.save();
-
     // Generate and store image URL
     const imageUrl = req.protocol + '://' + req.get('host') + '/Images/' + req.file.filename; // For URL storage
+
+    const item = new Threadmodel({ post, image: { url: imageUrl } });
+    const savedItem = await item.save();
+
     console.log('Image URL:', imageUrl);
-    savedItem.image.url = imageUrl;
-    await savedItem.save();
 
     res.status(201).json(savedItem);
   } catch (err) {
@@ -57,8 +51,9 @@ router.post('/thread', upload.single('image'), async (req, res) => {
 
 
 
+
 // Read
-router.get('/thread', async (req, res) => {
+router.get('/thread/:filename', async (req, res) => {
   try {
     console.log(fullUrl(req));
     const threads = await Threadmodel.find(); // Retrieve all posts
