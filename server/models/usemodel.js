@@ -12,7 +12,7 @@ const userSchema = new mongoose.Schema({
     required: true,
     unique: true,
     trim: true, // Trim whitespace
-    minlength: 3, // Minimum username length
+    minlength: 4, // Minimum username length
   },
   password: {
     type: String,
@@ -23,7 +23,7 @@ const userSchema = new mongoose.Schema({
     type: String,
     default: null, // Optional, allow storing a URL or path
   },
-  // ... other fields you may need (e.g., createdAt, updatedAt)
+  
 });
 
 module.exports = mongoose.model('User', userSchema);
