@@ -8,8 +8,6 @@ import FastImage from 'react-native-fast-image';
 
 const ViewThreads = () => {
   // const [posts, setPosts] = useState([]);
-  // const [images, setImages] = useState([]);
-  // const [isPressed, setIsPressed] = useState(false);
   const [pressedPosts, setPressedPosts] = useState({});
   const [threads, setThreads] = useState([]);
   // const [imageUrl, setImageUrl] = useState('');
