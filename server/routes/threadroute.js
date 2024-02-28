@@ -1,51 +1,87 @@
-const Threadmodel = require('../models/threadmodel');
-const express = require('express');
+import Threadmodel from '../models/threadmodel.js';
+import express from 'express';
 const router = express.Router();
-const multer = require('multer');
-// const fs = require('fs');
-const path = require('path');
-var url = require('url');
+import multer from 'multer';
+// const fs = require('fs'); // Remove if not needed
+import path from 'path';
+import url from 'url';
+import { S3Client,PutObjectCommand } from "@aws-sdk/client-s3"
+import dotenv from 'dotenv'
+dotenv.config()
 
-function fullUrl(req) {
-  return url.format({
-    protocol: req.protocol,
-    host: req.get('host'),
-    pathname: req.originalUrl
-  });
-}
+const bucketName = process.env.BUCKET_NAME
+const bucketRegion = process.env.BUCKET_REGION
+const accessKey = process.env.ACCESS_KEY
+const secretAccessKey = process.env.SECRET_ACCESS_KEY
 
-// Set up multer for handling image uploads
-const storage = multer.diskStorage({
-  destination: (req, file, cb) => {
-    cb(null, 'Images/');
+const s3 = new S3Client({
+  credentials: {
+    accessKeyId: accessKey,
+    secretAccessKey: secretAccessKey
   },
-  filename: (req, file, cb) => {
-    cb(null, file.fieldname + "_" + Date.now() + path.extname(file.originalname));
-  },
+  region: bucketRegion
 });
 
+// function fullUrl(req) {
+//   return url.format({
+//     protocol: req.protocol,
+//     host: req.get('host'),
+//     pathname: req.originalUrl
+//   });
+// }
+
+// // Set up multer for handling image uploads
+// const storage = multer.diskStorage({
+//   destination: (req, file, cb) => {
+//     cb(null, 'Images/');
+//   },
+//   filename: (req, file, cb) => {
+//     cb(null, file.fieldname + "_" + Date.now() + path.extname(file.originalname));
+//   },
+// });
+const storage = multer.memoryStorage();
 const upload = multer({ storage: storage });
 
 // Create
 // ...
 
-router.post('/thread', upload.single('image'), async (req, res) => {
-  try {
-    const { post } = req.body;
+// router.post('/thread', upload.single('image'), async (req, res) => {
+//   try {
+//     const { post } = req.body;
 
-    // Generate and store image URL
-    const imageUrl = req.protocol + '://' + req.get('host') + '/Images/' + req.file.filename; // For URL storage
+//     // Generate and store image URL
+//     const imageUrl = req.protocol + '://' + req.get('host') + '/Images/' + req.file.filename; // For URL storage
 
-    const item = new Threadmodel({ post, image: { url: imageUrl } });
-    const savedItem = await item.save();
+//     const item = new Threadmodel({ post, image: { url: imageUrl } });
+//     const savedItem = await item.save();
 
-    console.log('Image URL:', imageUrl);
+//     console.log('Image URL:', imageUrl);
 
-    res.status(201).json(savedItem);
-  } catch (err) {
-    console.error(err); // Log the error for debugging
-    res.status(500).json({ error: 'Failed to create post. Please try again.' }); // Informative message for the user
+//     res.status(201).json(savedItem);
+//   } catch (err) {
+//     console.error(err); // Log the error for debugging
+//     res.status(500).json({ error: 'Failed to create post. Please try again.' }); // Informative message for the user
+//   }
+// });
+
+
+router.post('/thread/post', upload.single('image'), async (req, res) => {
+  console.log("req.body",req.body)
+  console.log("req.file",req.file)
+
+  req.file.buffer
+
+  const params ={
+    Bucket: bucketName,
+    Key: req.file.originalname,
+    Body: req.file.buffer,
+    ContentType: req.file.mimetype
   }
+  
+  const command = new PutObjectCommand(params)
+  await s3.send(command)
+
+  res.send({})
 });
 
 
@@ -53,14 +89,29 @@ router.post('/thread', upload.single('image'), async (req, res) => {
 
 
 // Read
+// router.get('/thread/:filename', async (req, res) => {
+//   try {
+//     console.log(fullUrl(req));
+//     const threads = await Threadmodel.find(); // Retrieve all posts
+//     const formattedThreads = threads.map((thread) => ({
+//       _id: thread._id,
+//       post: thread.post,
+//       imageUrl: thread.image ? thread.image.url : null, // Use thread.image.url if thread.image is not undefined, otherwise use null
+//     }));
+//     res.json(formattedThreads);
+//   } catch (err) {
+//     console.error(err);
+//     res.status(500).json({ error: 'Failed to fetch posts' });
+//   }
+// });
+
 router.get('/thread/:filename', async (req, res) => {
   try {
-    console.log(fullUrl(req));
     const threads = await Threadmodel.find(); // Retrieve all posts
     const formattedThreads = threads.map((thread) => ({
       _id: thread._id,
       post: thread.post,
-      imageUrl: thread.image ? thread.image.url : null, // Use thread.image.url if thread.image is not undefined, otherwise use null
+      imageUrl: thread.image?.url || null, // Use optional chaining and nullish coalescing (?.)
     }));
     res.json(formattedThreads);
   } catch (err) {
@@ -68,7 +119,6 @@ router.get('/thread/:filename', async (req, res) => {
     res.status(500).json({ error: 'Failed to fetch posts' });
   }
 });
-
 
 // Update
 router.put('/thread/:id', async (req, res) => {
@@ -91,4 +141,4 @@ router.delete('/thread/:id', async (req, res) => {
   }
 });
 
-module.exports = router;
+export default router;

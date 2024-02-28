@@ -1,4 +1,4 @@
-const mongoose = require('mongoose');
+import mongoose from "mongoose";
 
 const itemSchema = new mongoose.Schema({
 post: {
@@ -12,4 +12,4 @@ post: {
 });
 
 const Threadmodel= mongoose.model('Thread', itemSchema);
-module.exports = Threadmodel;
+export default Threadmodel;

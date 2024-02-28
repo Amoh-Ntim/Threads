@@ -1,12 +1,12 @@
-const express = require('express');
-const mongoose = require('mongoose');
-const bodyParser = require('body-parser');
-const cors = require('cors');
+import express from 'express';
+import mongoose from 'mongoose';
+import bodyParser from 'body-parser';
+import cors from 'cors';
+import route from './routes/threadroute.js';
 const app = express();
-const route = require('../server/routes/threadroute');
-const path = require('path');
+// const path = require('path');
 const corsOptions = {
-  origin: 'http://192.168.109.69:8081', // replace with the origin of your frontend app
+  origin: 'http://192.168.30.69:8081', // replace with the origin of your frontend app
   methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
   allowedHeaders: ['Content-Type', 'Accept'],
 };
