@@ -6,7 +6,7 @@ import route from './routes/threadroute.js';
 const app = express();
 // const path = require('path');
 const corsOptions = {
-  origin: 'http://192.168.30.69:8081', // replace with the origin of your frontend app
+  origin: 'http://192.168.86.69:8081', // replace with the origin of your frontend app
   methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
   allowedHeaders: ['Content-Type', 'Accept'],
 };

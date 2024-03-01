@@ -2,13 +2,17 @@ import Threadmodel from '../models/threadmodel.js';
 import express from 'express';
 const router = express.Router();
 import multer from 'multer';
+import crypto from 'crypto'
 // const fs = require('fs'); // Remove if not needed
 import path from 'path';
 import url from 'url';
-import { S3Client,PutObjectCommand } from "@aws-sdk/client-s3"
+import { S3Client, PutObjectCommand, GetObjectCommand, } from "@aws-sdk/client-s3"
+import { getSignedUrl, } from "@aws-sdk/s3-request-presigner";
+
 import dotenv from 'dotenv'
 dotenv.config()
 
+const randomImageName = (bytes = 32) => crypto.randomBytes(bytes).toString('hex')
 const bucketName = process.env.BUCKET_NAME
 const bucketRegion = process.env.BUCKET_REGION
 const accessKey = process.env.ACCESS_KEY
@@ -65,24 +69,43 @@ const upload = multer({ storage: storage });
 // });
 
 
-router.post('/thread/post', upload.single('image'), async (req, res) => {
-  console.log("req.body",req.body)
-  console.log("req.file",req.file)
+router.post('/thread/posts', upload.single('image'), async (req, res) => {
+  console.log("req.body", req.body);
+  console.log("req.file", req.file);
 
-  req.file.buffer
+  try {
+    // Upload image to S3
+    req.file.buffer;
+    const params = {
+      Bucket: bucketName,
+      Key: randomImageName(),
+      Body: req.file.buffer,
+      ContentType: req.file.mimetype,
+    };
+    const command = new PutObjectCommand(params);
+    await s3.send(command);
 
-  const params ={
-    Bucket: bucketName,
-    Key: req.file.originalname,
-    Body: req.file.buffer,
-    ContentType: req.file.mimetype
+    // Create the image URL based on S3 configuration
+    const imageUrl = await getSignedUrl(s3, command, { expiresIn: 3600 }); // Replace with your URL construction logic
+
+    // Create and save the Threadmodel instance
+    const newThread = new Threadmodel({
+      post: req.body.post,
+      image: {
+        url: imageUrl,
+        // Add other relevant image metadata as needed
+      },
+      // Add other fields as required by your schema
+    });
+    await newThread.save();
+
+    res.send(newThread); // Or send a success response
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ error: 'Failed to create post.' });
   }
-  
-  const command = new PutObjectCommand(params)
-  await s3.send(command)
-
-  res.send({})
 });
+  
 
 
 
@@ -105,7 +128,7 @@ router.post('/thread/post', upload.single('image'), async (req, res) => {
 //   }
 // });
 
-router.get('/thread/:filename', async (req, res) => {
+router.get('/thread/post', async (req, res) => {
   try {
     const threads = await Threadmodel.find(); // Retrieve all posts
     const formattedThreads = threads.map((thread) => ({
@@ -113,7 +136,17 @@ router.get('/thread/:filename', async (req, res) => {
       post: thread.post,
       imageUrl: thread.image?.url || null, // Use optional chaining and nullish coalescing (?.)
     }));
-    res.json(formattedThreads);
+    for (thread of formattedThreads) {
+      const getObjectParams ={
+        Bucket: bucketName,
+        Key: thread.imageName
+      }
+      const command = new GetObjectCommand(getObjectParams);
+      const url = await getSignedUrl(s3, command, { expiresIn: 3600 });
+      thread.imageUrl = url;
+    }
+    res.send(formattedThreads)
+      res.json(formattedThreads);
   } catch (err) {
     console.error(err);
     res.status(500).json({ error: 'Failed to fetch posts' });
