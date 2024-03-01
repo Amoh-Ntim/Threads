@@ -17,7 +17,6 @@ const NewThread = ({ navigation }) => {
 
     // Check if there's an image to upload
     if (image) {
-      // let uriParts = image.split('.');
       const fileType = image.split('.').pop();
       // let fileType = uriParts[uriParts.length - 1];
 
