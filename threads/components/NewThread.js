@@ -28,7 +28,7 @@ const NewThread = ({ navigation }) => {
       });
     }
     
-            const response = await fetch('http://192.168.30.69:6000/thread/post', {
+            const response = await fetch('http://192.168.86.69:6000/thread/posts', {
                 method: 'POST',
                 headers: {
                   Accept: 'application/json',
