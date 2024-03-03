@@ -3,7 +3,6 @@ import express from 'express';
 const router = express.Router();
 import multer from 'multer';
 import crypto from 'crypto'
-// const fs = require('fs'); // Remove if not needed
 import path from 'path';
 import url from 'url';
 import { S3Client, PutObjectCommand, GetObjectCommand, } from "@aws-sdk/client-s3"
