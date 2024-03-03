@@ -4,7 +4,6 @@ import bodyParser from 'body-parser';
 import cors from 'cors';
 import route from './routes/threadroute.js';
 const app = express();
-// const path = require('path');
 const corsOptions = {
   origin: 'http://192.168.86.69:8081', // replace with the origin of your frontend app
   methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
@@ -12,8 +11,6 @@ const corsOptions = {
 };
 
 // Middleware
-// app.use(express.static(path.join(__dirname, 'Images'), { index: false }))
-// Remove trailing slash
 app.use(express.static('Images'));
 app.use(bodyParser.json());
 app.use(cors(corsOptions));
