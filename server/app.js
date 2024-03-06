@@ -5,7 +5,7 @@ import cors from 'cors';
 import route from './routes/threadroute.js';
 const app = express();
 const corsOptions = {
-  origin: 'http://192.168.86.69:8081', // replace with the origin of your frontend app
+  origin: 'http://192.168.20.69:8081', // replace with the origin of your frontend app
   methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
   allowedHeaders: ['Content-Type', 'Accept'],
 };
@@ -15,6 +15,7 @@ app.use(express.static('Images'));
 app.use(bodyParser.json());
 app.use(cors(corsOptions));
 app.use(route);
+app.use(express.json());
 const port = 6000;
 const uri = 'mongodb+srv://amohntim:threadss@threadscluster.za8dfkw.mongodb.net/?retryWrites=true&w=majority'
 

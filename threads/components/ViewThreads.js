@@ -18,7 +18,7 @@ const ViewThreads = () => {
   useEffect(() => {
     const fetchThreads = async () => {
       try {
-        const response = await fetch('http://192.168.86.69:6000/thread/post');
+        const response = await fetch('http://192.168.20.69:6000/thread/posts');
         const threadsData = await response.json();
         setThreads(threadsData);
       } catch (error) {
@@ -34,7 +34,7 @@ const ViewThreads = () => {
   
   const handleDelete = async (id) => {
     try {
-      const response = await fetch(`http://192.168.86.69:6000/thread/${id}`, {
+      const response = await fetch(`http://192.168.20.69:6000/thread/${id}`, {
         method: 'DELETE',
         headers: {
           Accept: 'application/json',
@@ -86,17 +86,17 @@ const ViewThreads = () => {
           </View>
           <View>
           {
-            thread.image && (
+            thread.imageUrl && (
             <Image
             source={{ uri: thread.imageUrl }}
-            style={{ width: 200, height: 200 }}
-            onError={() => console.error('Image loading failed:', thread.image.url)}
+            style={{ width: 300, height: 300 }}
+            onError={() => console.error('Image loading failed:', thread.imageUrl)}
           />         
             )    
           }
           </View>
           {/* view for the buttons */}
-          <View style={tw`flex flex-row gap-x-4`}>
+          <View style={tw`flex flex-row gap-x-4 mt-4`}>
           <View>
           <TouchableOpacity onPress={() => handlePress(thread._id)}>
                 <Image source={pressedPosts[thread._id] ? imgOther : imgDefault} />
