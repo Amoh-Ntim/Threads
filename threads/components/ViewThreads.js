@@ -82,14 +82,14 @@ const ViewThreads = () => {
         {threads.slice(0).reverse().map((thread) => (
           <View key={thread._id} style={tw`p-4 border-b border-gray-200`}>
           <View>
-            <Text style={tw`text-lg mb-8`}>{thread.post}</Text>
+            <Text style={tw`text-xl mb-8`}>{thread.post}</Text>
           </View>
           <View>
           {
             thread.imageUrl && (
             <Image
             source={{ uri: thread.imageUrl }}
-            style={{ width: 300, height: 300 }}
+            style={{ width: 300, height: 300, borderRadius: 20 }}
             onError={() => console.error('Image loading failed:', thread.imageUrl)}
           />         
             )    

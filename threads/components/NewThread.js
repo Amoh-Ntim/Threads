@@ -18,7 +18,6 @@ const NewThread = ({ navigation }) => {
     // Check if there's an image to upload
     if (image) {
       const fileType = image.split('.').pop();
-      // let fileType = uriParts[uriParts.length - 1];
 
       formData.append('image', {
         uri: image,
@@ -79,9 +78,14 @@ const NewThread = ({ navigation }) => {
   };
     return (
       <SafeAreaView>
+      <View style={tw`flex justify-center items-center mt-8 `}>
+        <Image
+            source={require('../assets/Vectorlogothreads.png')}
+        />
+    </View>
       <View>
       <TextInput
-        style={tw`h-48 p-4 text-lg`}
+        style={tw`h-48 p-4 text-xl`}
         multiline
         numberOfLines={4}
         onChangeText={setPost}
@@ -104,7 +108,7 @@ const NewThread = ({ navigation }) => {
             <View style={tw`flex-row justify-between items-center px-4`}>
         <Text>Anyone can reply</Text>
         <TouchableOpacity onPress={handlePost}>
-        <Text style={tw`rounded-full py-2 px-4 bg-gray-400 text-white`}>Post</Text>
+        <Text style={tw`rounded-full py-2 px-4 bg-gray-700 text-white`}>Post</Text>
         </TouchableOpacity>
       </View>
      </SafeAreaView>
