@@ -39,10 +39,10 @@ function App() {
           ),
         }}
       />
-      <Tab.Screen 
+      {/* <Tab.Screen 
         name="DeleteThread" 
         component={DeleteThread} 
-      />
+      /> */}
     </Tab.Navigator>
     </NavigationContainer>
   );
