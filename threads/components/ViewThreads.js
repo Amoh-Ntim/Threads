@@ -1,16 +1,22 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect,useRef } from 'react';
 import { Image, SafeAreaView, ScrollView, Text, TouchableOpacity, View } from 'react-native';
 import tw from 'twrnc';
 import { useNavigation } from '@react-navigation/native';
-import FastImage from 'react-native-fast-image';
+import BottomSheet, {BottomSheetView} from '@gorhom/bottom-sheet';
+// import { BottomSheet } from './BottomSheet';
 
 
 
 const ViewThreads = () => {
-  // const [posts, setPosts] = useState([]);
   const [pressedPosts, setPressedPosts] = useState({});
   const [threads, setThreads] = useState([]);
-  // const [imageUrl, setImageUrl] = useState('');
+  const [isOpen,setIsOpen] = useState(true);
+  const bottomSheetRef = useRef(null);
+
+  const handlePresentSheetPress = () => {
+    bottomSheetRef.current.expand();
+  };
+
 
   const imgDefault = require('../assets/Vectorlike.png');
   const imgOther = require('../assets/likedtrue.png');
@@ -18,7 +24,7 @@ const ViewThreads = () => {
   useEffect(() => {
     const fetchThreads = async () => {
       try {
-        const response = await fetch('http://192.168.20.69:6000/thread/posts');
+        const response = await fetch('http://192.168.195.69:6000/thread/posts');
         const threadsData = await response.json();
         setThreads(threadsData);
       } catch (error) {
@@ -34,7 +40,7 @@ const ViewThreads = () => {
   
   const handleDelete = async (id) => {
     try {
-      const response = await fetch(`http://192.168.20.69:6000/thread/${id}`, {
+      const response = await fetch(`http://192.168.195.69:6000/thread/${id}`, {
         method: 'DELETE',
         headers: {
           Accept: 'application/json',
@@ -73,39 +79,41 @@ const ViewThreads = () => {
 
   return (
     <SafeAreaView>
-    <View style={tw`flex justify-center items-center mt-8 `}>
+    <View style={tw`flex justify-center items-center mt-8`}>
         <Image
             source={require('../assets/Vectorlogothreads.png')}
         />
     </View> 
-      <ScrollView>
+      <ScrollView style={tw`mb-16 mt-4`}>
         {threads.slice(0).reverse().map((thread) => (
           <View key={thread._id} style={tw`p-4 border-b border-gray-200`}>
           <View>
-            <Text style={tw`text-xl mb-8`}>{thread.post}</Text>
+            <Text style={tw`text-lg mb-2 ml-4`}>{thread.post}</Text>
           </View>
-          <View>
+          <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
           {
             thread.imageUrl && (
             <Image
             source={{ uri: thread.imageUrl }}
-            style={{ width: 300, height: 300, borderRadius: 20 }}
+            style={{ width: 300, height: 300, borderRadius: 20, }}
             onError={() => console.error('Image loading failed:', thread.imageUrl)}
           />         
             )    
           }
           </View>
           {/* view for the buttons */}
-          <View style={tw`flex flex-row gap-x-4 mt-4`}>
+          <View style={tw`flex flex-row gap-x-4 mt-4 ml-4`}>
           <View>
           <TouchableOpacity onPress={() => handlePress(thread._id)}>
                 <Image source={pressedPosts[thread._id] ? imgOther : imgDefault} />
           </TouchableOpacity>
            </View> 
            <View>
+           <TouchableOpacity onPress={handlePresentSheetPress}>
           <Image
             source={require('../assets/Framecomment.png')}
           />
+           </TouchableOpacity>
            </View>
            <View>
           <Image
@@ -123,6 +131,17 @@ const ViewThreads = () => {
           </View>
         ))}
       </ScrollView>
+      <BottomSheet
+           ref={bottomSheetRef}
+           index={0}
+           snapPoints={['25%', '50%' ,'80%', '90%']}
+           enablePanDownToClose={true}
+           >
+           <BottomSheetView>
+           <Text style={tw`flex justify-center items-center text-lg ml-4 text-bold`}>Oops! No comments on this post yet! 😂</Text>
+           <Text style={tw`flex justify-center items-center text-lg ml-20 text-gray-400 `}>Be The First to comment</Text>
+           </BottomSheetView>
+           </BottomSheet>
     </SafeAreaView>
   );
 };

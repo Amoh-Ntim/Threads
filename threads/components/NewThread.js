@@ -26,7 +26,7 @@ const NewThread = ({ navigation }) => {
       });
     }
     
-            const response = await fetch('http://192.168.20.69:6000/thread/posts', {
+            const response = await fetch('http://192.168.195.69:6000/thread/posts', {
                 method: 'POST',
                 headers: {
                   Accept: 'application/json',
@@ -85,7 +85,7 @@ const NewThread = ({ navigation }) => {
     </View>
       <View>
       <TextInput
-        style={tw`h-48 p-4 text-xl`}
+        style={tw`h-48 p-4 text-lg`}
         multiline
         numberOfLines={4}
         onChangeText={setPost}

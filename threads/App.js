@@ -6,11 +6,14 @@ import ViewThreads from './components/ViewThreads';
 import { Image } from 'react-native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import DeleteThread from './components/DeleteThread';
+import { GestureHandlerRootView } from 'react-native-gesture-handler'; // Import GestureHandlerRootView
 
 const Tab = createBottomTabNavigator();
 
 function App() {
   return (
+    <GestureHandlerRootView style={{ flex: 1 }}>
+
     <NavigationContainer>
     <Tab.Navigator screenOptions={{
           headerShown: false,  // This line hides the header
@@ -45,6 +48,7 @@ function App() {
       /> */}
     </Tab.Navigator>
     </NavigationContainer>
+    </GestureHandlerRootView>
   );
 }
 
