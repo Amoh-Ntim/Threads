@@ -3,9 +3,6 @@ import { Image, SafeAreaView, ScrollView, Text, TouchableOpacity, View } from 'r
 import tw from 'twrnc';
 import { useNavigation } from '@react-navigation/native';
 import BottomSheet, {BottomSheetView} from '@gorhom/bottom-sheet';
-// import { BottomSheet } from './BottomSheet';
-
-
 
 const ViewThreads = () => {
   const [pressedPosts, setPressedPosts] = useState({});
