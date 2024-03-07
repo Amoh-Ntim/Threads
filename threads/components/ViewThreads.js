@@ -135,7 +135,7 @@ const ViewThreads = () => {
            enablePanDownToClose={true}
            >
            <BottomSheetView>
-           <Text style={tw`flex justify-center items-center text-lg ml-4 text-bold`}>Oops! No comments on this post yet! 😂</Text>
+           <Text style={tw`flex justify-center items-center text-lg ml-4 text-bold`}>Oops! No comments on this post yet! 😢</Text>
            <Text style={tw`flex justify-center items-center text-lg ml-20 text-gray-400 `}>Be The First to comment</Text>
            </BottomSheetView>
            </BottomSheet>
