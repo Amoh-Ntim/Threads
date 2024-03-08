@@ -31,7 +31,8 @@
     "react-native-safe-area-context": "4.6.3",
     "react-native-screens": "~3.22.0",
     "reanimated-bottom-sheet": "^1.0.0-alpha.22",
-    "twrnc": "^3.6.7"
+    "twrnc": "^3.6.7",
+    "expo-blur": "~12.4.1"
   },
   "devDependencies": {
     "@babel/core": "^7.20.0"

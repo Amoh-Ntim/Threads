@@ -26,7 +26,7 @@ const NewThread = ({ navigation }) => {
       });
     }
     
-            const response = await fetch('http://192.168.195.69:6000/thread/posts', {
+            const response = await fetch('http://192.168.27.69:6000/thread/posts', {
                 method: 'POST',
                 headers: {
                   Accept: 'application/json',
@@ -84,6 +84,19 @@ const NewThread = ({ navigation }) => {
         />
     </View>
       <View>
+      {/* profile */}
+      <View style={tw`flex items-end mr-2`}>
+            <View style={tw`mr-4`}>
+            <Image
+            source={require('../assets/photo_5814503674691567334_y.jpg')}
+            style={{ width: 40, height: 40, borderRadius: 80, }}
+            />
+            </View>
+            <View  style={tw`flex ml-2`}>
+            <Text style={tw`text-lg font-bold`}>sammy🇬🇭</Text>
+            </View>
+      </View>
+            
       <TextInput
         style={tw`h-48 p-4 text-lg`}
         multiline
@@ -94,7 +107,7 @@ const NewThread = ({ navigation }) => {
       />
       </View>
       <View style={tw`ml-8`}>
-      {image && <Image source={{ uri: image }} style={{ width: 300, height: 300 }} />}
+      {image && <Image source={{ uri: image }} style={{ width: 300, height: 300 , borderRadius: 20 }} />}
       </View>
 
       <View style={tw`flex-row justify-between items-center px-4 mb-8 mt-8`}>
