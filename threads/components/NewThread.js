@@ -72,7 +72,6 @@ const NewThread = ({ navigation }) => {
     console.log(result);
 
     if (!result.cancelled) {
-      // setImage(result.uri);
       setImage(result.assets[0].uri);
     }
   };
