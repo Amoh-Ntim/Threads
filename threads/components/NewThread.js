@@ -1,5 +1,4 @@
 import React, { useState } from 'react'
-// import axios from 'react-native-axios';
 import { Button, Image, SafeAreaView, ScrollView, Text, TextInput, TouchableOpacity, View } from 'react-native';
 import tw from 'twrnc';
 import * as ImagePicker from 'expo-image-picker';
@@ -7,7 +6,6 @@ import * as ImagePicker from 'expo-image-picker';
 
 const NewThread = ({ navigation }) => {
     const [post, setPost] = useState('');
-    // const [loading, setLoading] = useState(null)
     const [image, setImage] = useState(null);
 
     const handlePost = async () => {
