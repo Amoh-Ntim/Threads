@@ -29,7 +29,7 @@ const ViewThreads = () => {
   useEffect(() => {
     const fetchThreads = async () => {
       try {
-        const response = await fetch('http://192.168.27.69:6000/thread/posts');
+        const response = await fetch('http://192.168.149.69:6000/thread/posts');
         const threadsData = await response.json();
         setThreads(threadsData);
       } catch (error) {
@@ -110,7 +110,8 @@ const ViewThreads = () => {
             thread.imageUrl && (
             <Image
             source={{ uri: thread.imageUrl }}
-            style={{ width: 300, height: 300, borderRadius: 20, }}
+            style={{ width: 300, height: 240, borderRadius: 20 }}
+            resizeMode="stretch"
             onError={() => console.error('Image loading failed:', thread.imageUrl)}
           />         
             )    
