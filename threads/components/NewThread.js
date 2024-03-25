@@ -24,7 +24,7 @@ const NewThread = ({ navigation }) => {
       });
     }
     
-            const response = await fetch('http://192.168.27.69:6000/thread/posts', {
+            const response = await fetch('http://192.168.149.69:6000/thread/posts', {
                 method: 'POST',
                 headers: {
                   Accept: 'application/json',
@@ -103,7 +103,7 @@ const NewThread = ({ navigation }) => {
       />
       </View>
       <View style={tw`ml-8`}>
-      {image && <Image source={{ uri: image }} style={{ width: 300, height: 300 , borderRadius: 20 }} />}
+      {image && <Image source={{ uri: image }} style={{ width: 300, height: 300 , borderRadius: 20 }} resizeMode="cover"/>}
       </View>
 
       <View style={tw`flex-row justify-between items-center px-4 mb-2 mt-4`}>
