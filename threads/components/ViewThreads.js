@@ -5,7 +5,6 @@ import { useNavigation } from '@react-navigation/native';
 import BottomSheet, {BottomSheetView} from '@gorhom/bottom-sheet';
 import { Modal } from 'react-native';
 
-
 const ViewThreads = () => {
   const [pressedPosts, setPressedPosts] = useState({});
   const [threads, setThreads] = useState([]);
@@ -13,7 +12,7 @@ const ViewThreads = () => {
   const [isVisible, setIsVisible] = useState(false);
 
   const bottomSheetRef = useRef(null);
-  const DelbottomSheetRef = useRef(null);
+  // const DelbottomSheetRef = useRef(null);
 
   const handlePresentSheetPress = () => {
     bottomSheetRef.current.expand();
