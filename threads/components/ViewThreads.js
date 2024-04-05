@@ -39,7 +39,6 @@ const ViewThreads = () => {
     fetchThreads();
   }, []);
   
-
   const navigation = useNavigation();
   
   const handleDelete = async (id) => {
