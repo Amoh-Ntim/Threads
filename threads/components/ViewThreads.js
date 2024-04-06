@@ -12,8 +12,6 @@ const ViewThreads = () => {
   const [isVisible, setIsVisible] = useState(false);
 
   const bottomSheetRef = useRef(null);
-  // const DelbottomSheetRef = useRef(null);
-
   const handlePresentSheetPress = () => {
     bottomSheetRef.current.expand();
   };
